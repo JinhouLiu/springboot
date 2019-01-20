@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jinhou.springboot.mapper.RoleMapper" >
+  <sql id="Table_Name">role</sql>
+  <resultMap id="BaseResultMap" type="com.jinhou.springboot.domain.RolePO" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="create_datetime" property="createDatetime" jdbcType="TIMESTAMP" />
+    <result column="update_datetime" property="updateDatetime" jdbcType="TIMESTAMP" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="creator" property="creator" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id,name,remark,create_datetime,creator,update_datetime,modifier,status
+  </sql>
+
+   <select id="selectByUserId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select
+    <include refid="Base_Column_List" />
+    from role  a   where  a.id  in  (select  distinct    b.role_id    from   user_role
+    b  where b.user_id=#{userId,jdbcType=BIGINT})
+    order by  a.id  asc
+  </select>
+
+</mapper>

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Common">
+    <sql id="Common.findPage">
+    	select <include refid="Base_Column_List" />
+        from <include refid="Table_Name" /> 
+        <where>
+        	<if test="searchProperty!=null and searchValue!=null">
+				and ${searchProperty} like % #{searchValue} % 
+			</if>
+			<if test="filters!=null">
+	        	<foreach close="  " collection="filters" item="filter" open=" " separator=" ">
+	        		<if test="filter.property!=null and filter.property!=''">
+		        		<choose>
+	       					<when test="filter.operator.name() == 'eq' and filter.value!=null">
+	       						and ${filter.property} = #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'ne' and filter.value!=null">
+	       						and ${filter.property} != #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'gt' and filter.value!=null">
+	       						and ${filter.property} &gt; #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'lt' and filter.value!=null">
+	       						and ${filter.property} &lt; #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'ge' and filter.value!=null">
+	       						and ${filter.property} &gt;= #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'le' and filter.value!=null">
+	       						and ${filter.property} &lt;= #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'like' and filter.value!=null">
+	       						and ${filter.property} like #{filter.value}  
+	       					</when>
+	       					<when test="filter.operator.name() == 'in' and filter.value!=null">
+	       						and ${filter.property} in 
+								<foreach collection="filter.value" index="index" item="item" open="(" separator="," close=")">  
+									#{item}  
+								</foreach> 
+	       					</when>
+	       					<when test="filter.operator.name() == 'isNull' and filter.value!=null">
+	       						and ${filter.property} is null % 
+	       					</when>
+	       					<when test="filter.operator.name() == 'isNotNull' and filter.value!=null">
+	       						and ${filter.property} is not null % 
+	       					</when>
+	       					<otherwise></otherwise>
+	       				</choose>
+					</if>
+				</foreach>
+			</if>
+        </where>
+        <if test="orderProperty!=null and orderDirection!=null">
+        	order by ${orderProperty} ${orderDirection}
+		</if>
+        <if test="orders!=null">
+	        <foreach close="  " collection="orders" item="order" open="order by " separator=",">
+                ${order.property} ${order.direction}
+	        </foreach>
+		</if>
+    </sql>
+   	<!-- 得到记录总数 -->
+    <sql id="Common.count">
+	    select count(*) from <include refid="Table_Name" /> 
+        <where>
+			<if test="list!=null">
+	        	<foreach close="  " collection="list" item="filter" open=" " separator=" ">
+	        		<if test="filter.property!=null and filter.property!=''">
+		        		<choose>
+	       					<when test="filter.operator.name() == 'eq' and filter.value!=null">
+	       						and ${filter.property} = #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'ne' and filter.value!=null">
+	       						and ${filter.property} != #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'gt' and filter.value!=null">
+	       						and ${filter.property} &gt; #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'lt' and filter.value!=null">
+	       						and ${filter.property} &lt; #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'ge' and filter.value!=null">
+	       						and ${filter.property} &gt;= #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'le' and filter.value!=null">
+	       						and ${filter.property} &lt;= #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'like' and filter.value!=null">
+	       						and ${filter.property} like  #{filter.value}  
+	       					</when>
+	       					<when test="filter.operator.name() == 'in' and filter.value!=null">
+	       						and ${filter.property} in 
+								<foreach collection="filter.value" index="index" item="item" open="(" separator="," close=")">  
+									#{item}  
+								</foreach> 
+	       					</when>
+	       					<when test="filter.operator.name() == 'isNull' and filter.value!=null">
+	       						and ${filter.property} is null % 
+	       					</when>
+	       					<when test="filter.operator.name() == 'isNotNull' and filter.value!=null">
+	       						and ${filter.property} is not null % 
+	       					</when>
+	       					<otherwise></otherwise>
+	       				</choose>
+					</if>
+				</foreach>
+			</if>
+        </where>
+    </sql>
+    <sql id="Common.findList">
+    	select <include refid="Base_Column_List" />
+        from <include refid="Table_Name" /> 
+        <where>
+        	<if test="searchProperty!=null and searchValue!=null">
+				and ${searchProperty} like % #{searchValue} % 
+			</if>
+			<if test="filters!=null">
+	        	<foreach close="  " collection="filters" item="filter" open=" " separator=" ">
+	        		<if test="filter.property!=null and filter.property!=''">
+		        		<choose>
+	       					<when test="filter.operator.name() == 'eq' and filter.value!=null">
+	       						and ${filter.property} = #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'ne' and filter.value!=null">
+	       						and ${filter.property} != #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'gt' and filter.value!=null">
+	       						and ${filter.property} &gt; #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'lt' and filter.value!=null">
+	       						and ${filter.property} &lt; #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'ge' and filter.value!=null">
+	       						and ${filter.property} &gt;= #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'le' and filter.value!=null">
+	       						and ${filter.property} &lt;= #{filter.value} 
+	       					</when>
+	       					<when test="filter.operator.name() == 'like' and filter.value!=null">
+	       						and ${filter.property} like #{filter.value}  
+	       					</when>
+	       					<when test="filter.operator.name() == 'in' and filter.value!=null">
+	       						and ${filter.property} in 
+								<foreach collection="filter.value" index="index" item="item" open="(" separator="," close=")">  
+									#{item}  
+								</foreach> 
+	       					</when>
+	       					<when test="filter.operator.name() == 'isNull' and filter.value!=null">
+	       						and ${filter.property} is null % 
+	       					</when>
+	       					<when test="filter.operator.name() == 'isNotNull' and filter.value!=null">
+	       						and ${filter.property} is not null % 
+	       					</when>
+	       					<otherwise></otherwise>
+	       				</choose>
+					</if>
+				</foreach>
+			</if>
+        </where>
+        <if test="orderProperty!=null and orderDirection!=null">
+        	order by ${orderProperty} ${orderDirection}
+		</if>
+        <if test="orders!=null">
+	        <foreach close="  " collection="orders" item="order" open="order by " separator=",">
+                ${order.property} ${order.direction}
+	        </foreach>
+		</if>
+    </sql>
+</mapper>
