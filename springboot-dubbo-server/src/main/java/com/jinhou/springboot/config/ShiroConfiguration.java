@@ -1,6 +1,7 @@
 package com.jinhou.springboot.config;
 
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
+import org.apache.shiro.crypto.hash.Md5Hash;
 import org.apache.shiro.spring.LifecycleBeanPostProcessor;
 import org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
@@ -84,8 +85,13 @@ public class ShiroConfiguration {
     @DependsOn("lifecycleBeanPostProcessor")
     public ShiroRealm shiroRealm() {
         ShiroRealm realm = new ShiroRealm();
-//        realm.setCredentialsMatcher(hashedCredentialsMatcher());
+        realm.setCredentialsMatcher(hashedCredentialsMatcher());
         return realm;
+    }
+
+    public static void main(String[] args) {
+        String password = new Md5Hash("123456",null,2).toString();  //4280d89a5a03f812751f504cc10ee8a5
+        System.out.println(password);
     }
 
 //    /**
@@ -127,9 +133,9 @@ public class ShiroConfiguration {
 //        filters.put("logout",null);
  //       shiroFilterFactoryBean.setFilters(filters);
         Map<String, String> filterChainDefinitionManager = new LinkedHashMap<String, String>();
-        filterChainDefinitionManager.put("/login", "anon");
+        filterChainDefinitionManager.put("/login", "authc");
         filterChainDefinitionManager.put("/logout", "logout");
-        filterChainDefinitionManager.put("/**", "authc");
+        filterChainDefinitionManager.put("/**", "user");
 //        filterChainDefinitionManager.put("/events/**", "authc,roles[ROLE_ADMIN]");
 //        filterChainDefinitionManager.put("/user/edit/**", "authc,perms[user:edit]");// 这里为了测试，固定写死的值，也可以从数据库或其他配置中读取
 //        filterChainDefinitionManager.put("/**", "anon");

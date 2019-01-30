@@ -52,7 +52,7 @@ public class ShiroRealm extends AuthorizingRealm {
             System.out.println(user.getPassword());
             Session session = SecurityUtils.getSubject().getSession();
             session.setAttribute("user", user);
-            return new SimpleAuthenticationInfo(userName,token.getPassword(),getName());
+            return new SimpleAuthenticationInfo(userName,user.getPassword(),getName());
         } else {
             return null;
         }
