@@ -18,8 +18,9 @@ public class CommonController {
 
     @RequestMapping(value={"", "/", "index"})
     @ResponseBody
-    public String   index(){
+    public String   index(HttpServletRequest request){
 
+        System.out.println(request.getHeaderNames());
         return "index";
     }
 
@@ -51,11 +52,11 @@ public class CommonController {
             redriect.addFlashAttribute("errorText", "您的账号或密码输入错误!");
             return "redirect:/login";
         }
-        return "main";
+        return "";
     }
 
 
-    @RequestMapping(value={"main"})
+     @RequestMapping(value={"main"})
     @ResponseBody
     public String   main(){
 

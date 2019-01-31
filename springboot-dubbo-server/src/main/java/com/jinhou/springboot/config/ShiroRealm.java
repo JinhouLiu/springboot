@@ -21,24 +21,12 @@ public class ShiroRealm extends AuthorizingRealm {
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        logger.info("doGetAuthorizationInfo+"+principalCollection.toString());
-        UserPO user = userService.findByUserName((String) principalCollection.getPrimaryPrincipal());
-
-
-        //把principals放session中 key=userId value=principals
-        SecurityUtils.getSubject().getSession().setAttribute(String.valueOf(user.getId()),SecurityUtils.getSubject().getPrincipals());
-
-        SimpleAuthorizationInfo info = new SimpleAuthorizationInfo();
-
-
-        //设置登录次数、时间
-//        userService.updateUserLogin(user);
-        return info;
+       return  null;
     }
 
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
-        logger.info("doGetAuthenticationInfo +"  + authenticationToken.toString());
+//        logger.info("doGetAuthenticationInfo +"  + authenticationToken.toString());
 
         UsernamePasswordToken token = (UsernamePasswordToken) authenticationToken;
         String userName=token.getUsername();

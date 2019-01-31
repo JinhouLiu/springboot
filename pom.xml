@@ -12,8 +12,9 @@
 		
 		<module>springboot-dubbo-server</module>
 		<module>springboot-dubbo-client</module>
-		
+        <module>utils</module>
 
-	</modules>
+
+    </modules>
 
 </project>
